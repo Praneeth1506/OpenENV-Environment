@@ -1,0 +1,10 @@
+openenv
+transformers
+trl
+unsloth
+torch
+gradio
+plotly
+pandas
+numpy
+wandb
