@@ -21,6 +21,8 @@ from demo_scenarios import (
 from prompt_builder import state_to_prompt, parse_action
 
 
+# ── Color maps ────────────────────────────────────────────────────────────
+
 ACTION_COLORS = {
     "OBSERVE_QUIETLY":  "#95a5a6",
     "GENTLE_AWARENESS": "#3498db",
@@ -38,12 +40,15 @@ STATE_COLORS = {
 }
 
 
+# ── Chart builder ─────────────────────────────────────────────────────────
+
 def build_chart(records, title):
     days = [r["day"] for r in records]
     trust = [r["trust"] for r in records]
     sentiment = [r["sentiment"] for r in records]
     hidden_numeric = [STATE_NUMERIC[r["hidden_state"]] for r in records]
     hidden_labels = [r["hidden_state"] for r in records]
+    actions = [r["action"] for r in records]
     rewards = [r["reward"] for r in records]
 
     cumulative = []
@@ -64,6 +69,7 @@ def build_chart(records, title):
         row_heights=[0.25, 0.25, 0.25, 0.25],
     )
 
+    # Trust
     fig.add_trace(go.Scatter(
         x=days, y=trust,
         mode="lines+markers", name="Guardian Trust",
@@ -73,6 +79,7 @@ def build_chart(records, title):
                   annotation_text="Alert ignored below here",
                   row=1, col=1)
 
+    # Sentiment
     fig.add_trace(go.Scatter(
         x=days, y=sentiment,
         mode="lines", name="Sentiment",
@@ -80,6 +87,7 @@ def build_chart(records, title):
         fill="tozeroy", fillcolor="rgba(52,152,219,0.1)",
     ), row=2, col=1)
 
+    # Hidden state
     fig.add_trace(go.Scatter(
         x=days, y=hidden_numeric,
         mode="lines+markers", name="Risk State",
@@ -99,6 +107,7 @@ def build_chart(records, title):
         row=3, col=1
     )
 
+    # Cumulative reward
     fig.add_trace(go.Scatter(
         x=days, y=cumulative,
         mode="lines", name="Cumulative Reward",
@@ -106,6 +115,7 @@ def build_chart(records, title):
         fill="tozeroy", fillcolor="rgba(155,89,182,0.1)",
     ), row=4, col=1)
 
+    # Intervention markers on trust chart
     for r in records:
         if r["action"] != "OBSERVE_QUIETLY":
             fig.add_vline(
@@ -120,14 +130,6 @@ def build_chart(records, title):
         showlegend=False,
         plot_bgcolor="white", paper_bgcolor="white",
         margin=dict(l=60, r=40, t=80, b=40),
-        annotations=[
-            dict(x=0.22, y=-0.12, xref="paper", yref="paper",
-                text=f"Untrained | Reward: {untrained_total:+.1f} | Final: {untrained[-1]['hidden_state']}",
-                showarrow=False, font=dict(size=12, color="#e74c3c")),
-            dict(x=0.78, y=-0.12, xref="paper", yref="paper",
-                text=f"Trained | Reward: {trained_total:+.1f} | Final: {trained[-1]['hidden_state']}",
-                showarrow=False, font=dict(size=12, color="#2ecc71")),
-        ],
     )
     fig.update_xaxes(title_text="Day", row=4, col=1)
     return fig
@@ -146,9 +148,7 @@ def build_table(records):
 
 def build_summary(records):
     total = sum(r["reward"] for r in records)
-    interventions = sum(
-        1 for r in records if r["action"] != "OBSERVE_QUIETLY"
-    )
+    interventions = sum(1 for r in records if r["action"] != "OBSERVE_QUIETLY")
     return (
         f"**Final state:** {records[-1]['hidden_state']}  \n"
         f"**Final trust:** {records[-1]['trust']:.0%}  \n"
@@ -157,14 +157,15 @@ def build_summary(records):
     )
 
 
+# ── Tab 1: Trained agent ──────────────────────────────────────────────────
+
 def run_trained():
     _, records = run_priya_scenario()
-    return (
-        build_chart(records, "Trained Agent - Priya's Story"),
-        build_table(records),
-        build_summary(records),
-    )
+    return build_chart(records, "Trained Agent — Priya's Story"), \
+           build_table(records), build_summary(records)
 
+
+# ── Tab 2: Before/After comparison ───────────────────────────────────────
 
 def run_comparison():
     _, trained = run_priya_scenario()
@@ -178,9 +179,9 @@ def run_comparison():
         horizontal_spacing=0.12,
     )
 
-    for data, col, color, fill_rgb in [
-        (untrained, 1, "#e74c3c", "231,76,60"),
-        (trained,   2, "#2ecc71", "46,204,113"),
+    for data, col, color in [
+        (untrained, 1, "#e74c3c"),
+        (trained, 2, "#2ecc71"),
     ]:
         days = [r["day"] for r in data]
         trust = [r["trust"] for r in data]
@@ -188,7 +189,7 @@ def run_comparison():
             x=days, y=trust, mode="lines",
             line=dict(color=color, width=2.5),
             fill="tozeroy",
-            fillcolor=f"rgba({fill_rgb},0.15)",
+            fillcolor=f"rgba({'231,76,60' if col==1 else '46,204,113'},0.1)",
         ), row=1, col=col)
 
         for r in data:
@@ -201,30 +202,25 @@ def run_comparison():
                 )
 
     fig.update_layout(
-        height=500,
-        showlegend=False,
-        title_text="Same scenario. Same child. Completely different outcomes.",
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=11),
-        margin=dict(l=50, r=50, t=80, b=50),
+        height=400, showlegend=False,
+        title="Same scenario. Same child. Completely different outcomes.",
+        plot_bgcolor="white", paper_bgcolor="white",
     )
     for col in [1, 2]:
         fig.update_yaxes(range=[0, 1.1], title_text="Trust", row=1, col=col)
         fig.update_xaxes(title_text="Day", row=1, col=col)
 
     summary = (
-        f"**Untrained:** Reward {untrained_total:+.1f} | "
-        f"Final: {untrained[-1]['hidden_state']} | "
-        f"Trust: {untrained[-1]['trust']:.0%}  \n"
-        f"**Trained:** Reward {trained_total:+.1f} | "
-        f"Final: {trained[-1]['hidden_state']} | "
-        f"Trust: {trained[-1]['trust']:.0%}  \n"
-        f"**Improvement:** {trained_total - untrained_total:+.1f} reward | "
-        f"{trained[-1]['trust'] - untrained[-1]['trust']:+.0%} trust"
+        f"**Reward improvement:** {trained_total - untrained_total:+.1f}  \n"
+        f"**Trust improvement:** "
+        f"{trained[-1]['trust'] - untrained[-1]['trust']:+.0%}  \n"
+        f"**Trained final state:** {trained[-1]['hidden_state']}  \n"
+        f"**Untrained final state:** {untrained[-1]['hidden_state']}"
     )
     return fig, summary
 
+
+# ── Tab 3: Live interactive demo ──────────────────────────────────────────
 
 def run_live(
     archetype, activity_hour, unknown_contacts, message_volume,
@@ -257,44 +253,33 @@ def run_live(
     }
 
     action = rule_based_agent(state)
+    prompt = state_to_prompt(state)
 
     concern_notes = []
     if int(message_volume) > 40:
-        concern_notes.append(
-            f"High unknown contact volume ({message_volume} messages)"
-        )
+        concern_notes.append(f"High unknown contact volume ({message_volume} messages)")
     if float(friend_delta) < -30:
-        concern_notes.append(
-            f"Friend group down {abs(float(friend_delta)):.0f}%"
-        )
+        concern_notes.append(f"Friend group down {abs(float(friend_delta)):.0f}%")
     if float(sentiment_trend) < -20:
         concern_notes.append("Declining sentiment trend")
     if float(family_response) < 40:
-        concern_notes.append(
-            f"Low family response rate ({family_response}%)"
-        )
+        concern_notes.append(f"Low family response rate ({family_response}%)")
 
     action_emoji = {
-        "OBSERVE_QUIETLY":  "Green circle - OBSERVE QUIETLY",
-        "GENTLE_AWARENESS": "Blue circle - GENTLE AWARENESS",
-        "PARENT_CHECK_IN":  "Yellow circle - PARENT CHECK IN",
-        "URGENT_SUPPORT":   "Red circle - URGENT SUPPORT",
+        "OBSERVE_QUIETLY": "🟢",
+        "GENTLE_AWARENESS": "🔵",
+        "PARENT_CHECK_IN": "🟡",
+        "URGENT_SUPPORT": "🔴",
     }
 
     trust_warning = ""
     if float(guardian_trust) < 30:
-        trust_warning = (
-            "\n\n**Warning:** Guardian trust too low "
-            "- any alert will be ignored. Staying silent to preserve trust."
-        )
+        trust_warning = "\n\n⚠️ **Guardian trust too low** — any alert will be ignored. Staying silent to preserve trust."
     elif int(days_since) < 2:
-        trust_warning = (
-            "\n\n**Warning:** Alert sent too recently "
-            "- waiting to avoid fatigue."
-        )
+        trust_warning = "\n\n⚠️ **Alert sent too recently** — waiting to avoid fatigue."
 
     reasoning = (
-        f"## Decision: {action_emoji.get(action, action)}\n\n"
+        f"## {action_emoji.get(action,'⚪')} Decision: {action.replace('_',' ')}\n\n"
         f"**Archetype:** {archetype}  \n"
         f"**Guardian trust:** {guardian_trust}%  \n"
         f"**Days since last alert:** {days_since}\n\n"
@@ -305,11 +290,14 @@ def run_live(
         for note in concern_notes:
             reasoning += f"- {note}\n"
     else:
-        reasoning += "**Signals:** Within normal range - no action warranted.\n"
+        reasoning += "**Signals:** Within normal range — no action warranted.\n"
 
     reasoning += trust_warning
+
     return reasoning
 
+
+# ── Tab 4: Reward curve ───────────────────────────────────────────────────
 
 def show_reward_curve():
     results_dir = os.path.join(os.path.dirname(__file__), '..', 'results')
@@ -323,14 +311,11 @@ def show_reward_curve():
             data = json.load(f)
         rewards = data.get("episode_rewards", [])
         if len(rewards) >= 20:
-            smoothed = np.convolve(
-                rewards, np.ones(20)/20, mode='valid'
-            )
+            smoothed = np.convolve(rewards, np.ones(20)/20, mode='valid')
             avg = sum(rewards)/len(rewards)
             fig.add_trace(go.Scatter(
                 x=list(range(len(smoothed))), y=smoothed,
-                mode="lines",
-                name=f"Random Agent (avg: {avg:+.1f})",
+                mode="lines", name=f"Random Agent (avg: {avg:+.1f})",
                 line=dict(color="#e74c3c", width=2),
             ))
 
@@ -339,14 +324,11 @@ def show_reward_curve():
             data = json.load(f)
         rewards = data.get("episode_rewards", [])
         if len(rewards) >= 20:
-            smoothed = np.convolve(
-                rewards, np.ones(20)/20, mode='valid'
-            )
+            smoothed = np.convolve(rewards, np.ones(20)/20, mode='valid')
             avg = sum(rewards)/len(rewards)
             fig.add_trace(go.Scatter(
                 x=list(range(len(smoothed))), y=smoothed,
-                mode="lines",
-                name=f"Trained Agent (avg: {avg:+.1f})",
+                mode="lines", name=f"Trained Agent (avg: {avg:+.1f})",
                 line=dict(color="#2ecc71", width=2),
             ))
 
@@ -357,132 +339,74 @@ def show_reward_curve():
     )
 
     fig.update_layout(
-        title="SafeSignal - Training Reward Curve",
-        xaxis_title="Episode",
-        yaxis_title="Total Episode Reward",
-        height=400,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        title="SafeSignal — Training Reward Curve",
+        xaxis_title="Episode", yaxis_title="Total Episode Reward",
+        height=400, plot_bgcolor="white", paper_bgcolor="white",
         legend=dict(x=0.01, y=0.99),
     )
     return fig
 
 
+# ── Build Gradio app ──────────────────────────────────────────────────────
+
 with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
     gr.Markdown("""
-# SafeSignal - Child Digital Wellbeing AI
+# 🛡️ SafeSignal — Child Digital Wellbeing AI
 ### Training AI to know when to act, when to wait, and how to keep the trust that makes future warnings matter.
-> Observes **behavioral metadata only** - never message content.
-> Output is a suggestion to have a conversation with your child.
+> Observes **behavioral metadata only** — never message content. Output is a suggestion to have a conversation with your child.
 """)
 
     with gr.Tabs():
 
-        with gr.Tab("30-Day Episode"):
-            gr.Markdown(
-                "Watch the trained agent monitor a child over 30 days. "
-                "Hidden risk state revealed at the end."
-            )
-            trained_btn = gr.Button(
-                "Run Trained Agent (Priya's Story)", variant="primary"
-            )
+        with gr.Tab("📅 30-Day Episode"):
+            gr.Markdown("Watch the trained agent monitor a child over 30 days. Hidden risk state revealed at the end.")
+            trained_btn = gr.Button("▶ Run Trained Agent (Priya's Story)", variant="primary")
             trained_summary = gr.Markdown()
             trained_chart = gr.Plot()
             trained_table = gr.Dataframe(wrap=True)
-            trained_btn.click(
-                fn=run_trained,
-                outputs=[trained_chart, trained_table, trained_summary],
-            )
+            trained_btn.click(fn=run_trained, outputs=[trained_chart, trained_table, trained_summary])
 
-        with gr.Tab("Before vs After"):
-            gr.Markdown(
-                "Same scenario. Same child. Trained vs untrained agent."
-            )
-            compare_btn = gr.Button(
-                "Compare Agents", variant="primary"
-            )
+        with gr.Tab("⚖️ Before vs After"):
+            gr.Markdown("Same scenario. Same child. Trained vs untrained agent.")
+            compare_btn = gr.Button("▶ Compare Agents", variant="primary")
             compare_summary = gr.Markdown()
             compare_chart = gr.Plot()
-            compare_btn.click(
-                fn=run_comparison,
-                outputs=[compare_chart, compare_summary],
-            )
+            compare_btn.click(fn=run_comparison, outputs=[compare_chart, compare_summary])
 
-        with gr.Tab("Live Agent Reasoning"):
-            gr.Markdown(
-                "Adjust behavioral signals and see what the agent "
-                "decides in real time."
-            )
+        with gr.Tab("🎛️ Live Agent Reasoning"):
+            gr.Markdown("Adjust behavioral signals and see what the agent decides in real time.")
             with gr.Row():
                 with gr.Column():
-                    arch = gr.Dropdown(
-                        ["explorer","withdrawer","target"],
-                        value="target", label="Child Archetype"
-                    )
-                    hour = gr.Slider(
-                        14, 26, value=20, step=0.5,
-                        label="Activity Hour (24=midnight)"
-                    )
-                    unknowns = gr.Slider(
-                        0, 10, value=1, step=1,
-                        label="Unknown Contacts Today"
-                    )
-                    vol = gr.Slider(
-                        0, 120, value=5, step=1,
-                        label="Messages with Unknown Contact"
-                    )
-                    delta = gr.Slider(
-                        -80, 20, value=0, step=5,
-                        label="Friend Engagement Change (%)"
-                    )
-                    family = gr.Slider(
-                        0, 100, value=75, step=5,
-                        label="Family Response Rate (%)"
-                    )
-                    sentiment = gr.Slider(
-                        -50, 20, value=0, step=5,
-                        label="Sentiment Trend 7 Days (%)"
-                    )
-                    trust = gr.Slider(
-                        0, 100, value=80, step=5,
-                        label="Guardian Trust (%)"
-                    )
-                    days_since = gr.Slider(
-                        0, 30, value=5, step=1,
-                        label="Days Since Last Alert"
-                    )
-                    ignored = gr.Slider(
-                        0, 5, value=0, step=1,
-                        label="Consecutive Ignored Alerts"
-                    )
-                    live_btn = gr.Button(
-                        "What Should the Agent Do?", variant="primary"
-                    )
+                    arch = gr.Dropdown(["explorer","withdrawer","target"], value="target", label="Child Archetype")
+                    hour = gr.Slider(14, 26, value=20, step=0.5, label="Activity Hour (24=midnight)")
+                    unknowns = gr.Slider(0, 10, value=1, step=1, label="Unknown Contacts Today")
+                    vol = gr.Slider(0, 120, value=5, step=1, label="Messages with Unknown Contact")
+                    delta = gr.Slider(-80, 20, value=0, step=5, label="Friend Engagement Change (%)")
+                    family = gr.Slider(0, 100, value=75, step=5, label="Family Response Rate (%)")
+                    sentiment = gr.Slider(-50, 20, value=0, step=5, label="Sentiment Trend 7 Days (%)")
+                    trust = gr.Slider(0, 100, value=80, step=5, label="Guardian Trust (%)")
+                    days_since = gr.Slider(0, 30, value=5, step=1, label="Days Since Last Alert")
+                    ignored = gr.Slider(0, 5, value=0, step=1, label="Consecutive Ignored Alerts")
+                    live_btn = gr.Button("What Should the Agent Do?", variant="primary")
                 with gr.Column():
                     live_output = gr.Markdown()
             live_btn.click(
                 fn=run_live,
-                inputs=[
-                    arch, hour, unknowns, vol, delta,
-                    family, sentiment, trust, days_since, ignored,
-                ],
+                inputs=[arch, hour, unknowns, vol, delta, family, sentiment, trust, days_since, ignored],
                 outputs=[live_output],
             )
 
-        with gr.Tab("Training Results"):
-            gr.Markdown(
-                "Reward curve showing learning progress across episodes."
-            )
+        with gr.Tab("📈 Training Results"):
+            gr.Markdown("Reward curve showing learning progress across training episodes.")
             curve_btn = gr.Button("Load Results", variant="secondary")
             curve_plot = gr.Plot()
             curve_btn.click(fn=show_reward_curve, outputs=[curve_plot])
 
     gr.Markdown("""
 ---
-**Privacy:** Behavioral metadata only. Never reads messages. Never stores data.
-Output is a conversation prompt - not a surveillance report.
+**Privacy:** Behavioral metadata only. Never reads messages. Never stores data. Output is a conversation prompt — not a surveillance report.
 
-**Research:** Thorn (2021) - CCRC UNH - Pew Research (2023) - IWF (2023)
+**Research:** Thorn (2021) · CCRC UNH · Pew Research (2023) · IWF (2023)
 """)
 
 
