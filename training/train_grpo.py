@@ -166,27 +166,42 @@ def grpo_reward_fn(prompts, completions, **kwargs):
 
 
 # ── Step 4: GRPO Configuration ─────────────────────────────────────────────
-from trl import GRPOConfig, GRPOTrainer
+import inspect
+import trl
 
-grpo_config = GRPOConfig(
-    num_generations              = 8,
-    max_prompt_length            = MAX_SEQ_LEN,
-    max_completion_length        = MAX_NEW_TOKENS,
-    learning_rate                = 5e-6,
-    per_device_train_batch_size  = 4 if DEVICE == "cuda" else 1,
-    gradient_accumulation_steps  = 2 if DEVICE == "cuda" else 8,
-    num_train_epochs             = 1,
-    beta                         = 0.01,
-    output_dir                   = "./training/checkpoints",
-    logging_steps                = LOG_EVERY,
-    save_steps                   = CHECKPOINT_EVERY,
-    warmup_ratio                 = 0.1,
-    lr_scheduler_type            = "cosine",
-    bf16                         = USE_BF16,
-    fp16                         = (DEVICE == "cuda" and not USE_BF16),
-    dataloader_num_workers       = 4 if DEVICE == "cuda" else 0,
-    report_to                    = "none",
-)
+GRPOConfig = getattr(trl, "GRPOConfig", None)
+GRPOTrainer = getattr(trl, "GRPOTrainer", None)
+if GRPOConfig is None or GRPOTrainer is None:
+    from trl import ORPOConfig as GRPOConfig, ORPOTrainer as GRPOTrainer
+    print("Warning: GRPO classes not found in TRL; falling back to ORPO classes.")
+
+raw_config_kwargs = {
+    "num_generations":             8,
+    "max_prompt_length":           MAX_SEQ_LEN,
+    "max_completion_length":       MAX_NEW_TOKENS,
+    "learning_rate":               5e-6,
+    "per_device_train_batch_size": 4 if DEVICE == "cuda" else 1,
+    "gradient_accumulation_steps": 2 if DEVICE == "cuda" else 8,
+    "num_train_epochs":            1,
+    "beta":                        0.01,
+    "output_dir":                  "./training/checkpoints",
+    "logging_steps":               LOG_EVERY,
+    "save_steps":                  CHECKPOINT_EVERY,
+    "warmup_ratio":                0.1,
+    "lr_scheduler_type":           "cosine",
+    "bf16":                        USE_BF16,
+    "fp16":                        (DEVICE == "cuda" and not USE_BF16),
+    "dataloader_num_workers":      4 if DEVICE == "cuda" else 0,
+    "report_to":                   "none",
+}
+
+allowed_args = set(inspect.signature(GRPOConfig.__init__).parameters) - {"self"}
+config_kwargs = {k: v for k, v in raw_config_kwargs.items() if k in allowed_args}
+unsupported = set(raw_config_kwargs) - allowed_args
+if unsupported:
+    print("Filtered unsupported GRPO/ORPO config args:", unsupported)
+
+grpo_config = GRPOConfig(**config_kwargs)
 
 # ── Step 5: Train ───────────────────────────────────────────────────────────
 trainer = GRPOTrainer(
