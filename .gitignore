@@ -17,3 +17,4 @@ grpo_checkpoints/
 
 # System
 .DS_Store
+trained_model/
