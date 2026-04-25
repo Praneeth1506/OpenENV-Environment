@@ -149,6 +149,7 @@ def grpo_reward_fn(prompts, completions, **kwargs):
         
         # Simulate guardian response for reward computation
         env_temp = SafeSignalEnv()
+        env_temp.reset() # This initializes env_temp.child
         env_temp.child.hidden_state = hidden_state
         env_temp.child.guardian_trust = state["guardian_trust"]
         env_temp.child.consecutive_ignored_alerts = state[
