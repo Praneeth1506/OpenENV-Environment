@@ -1,3 +1,14 @@
+---
+title: SafeSignal
+emoji: 🚦
+colorFrom: indigo
+colorTo: blue
+sdk: python
+python_version: "3.11"
+app_file: space_entrypoint.py
+pinned: false
+---
+
 # OpenENV-Environment
 
 A reinforcement learning environment for training AI models to make safe and appropriate decisions in child safety scenarios. This project implements both PPO and GRPO training approaches using the SafeSignal environment.
