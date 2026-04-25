@@ -1,0 +1,23 @@
+name: SafeSignal
+version: 1.0.0
+description: >
+  A reinforcement learning environment that teaches an AI agent to detect
+  shifts in a child's online behavioral patterns and decide when to alert
+  a guardian, when to stay silent, and how to preserve the trust that
+  makes future warnings matter.
+entry_point: environment/safesignal_env.py
+environment_class: SafeSignalEnv
+observation_space: dict
+action_space:
+  type: discrete
+  actions:
+    - OBSERVE_QUIETLY
+    - GENTLE_AWARENESS
+    - PARENT_CHECK_IN
+    - URGENT_SUPPORT
+episode_length: 30
+tags:
+  - child-safety
+  - pomdp
+  - trust-modeling
+  - behavioral-signals
