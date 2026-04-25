@@ -120,6 +120,14 @@ def build_chart(records, title):
         showlegend=False,
         plot_bgcolor="white", paper_bgcolor="white",
         margin=dict(l=60, r=40, t=80, b=40),
+        annotations=[
+            dict(x=0.22, y=-0.12, xref="paper", yref="paper",
+                text=f"Untrained | Reward: {untrained_total:+.1f} | Final: {untrained[-1]['hidden_state']}",
+                showarrow=False, font=dict(size=12, color="#e74c3c")),
+            dict(x=0.78, y=-0.12, xref="paper", yref="paper",
+                text=f"Trained | Reward: {trained_total:+.1f} | Final: {trained[-1]['hidden_state']}",
+                showarrow=False, font=dict(size=12, color="#2ecc71")),
+        ],
     )
     fig.update_xaxes(title_text="Day", row=4, col=1)
     return fig
@@ -167,11 +175,7 @@ def run_comparison():
 
     fig = make_subplots(
         rows=1, cols=2,
-        subplot_titles=(
-            f"Untrained | Reward: {untrained_total:+.1f}",
-            f"Trained | Reward: {trained_total:+.1f}",
-        ),
-        horizontal_spacing=0.08,
+        horizontal_spacing=0.12,
     )
 
     for data, col, color, fill_rgb in [
