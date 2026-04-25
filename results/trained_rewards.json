@@ -1,0 +1,814 @@
+{
+  "policy": "grpo_trained",
+  "n_episodes": 100,
+  "avg_reward": 18.525,
+  "pct_ended_safe": 84.0,
+  "episode_rewards": [
+    20.6,
+    19.2,
+    18.2,
+    18.3,
+    15.1,
+    16.8,
+    19.52,
+    20.0,
+    17.06,
+    16.74,
+    19.0,
+    20.86,
+    20.1,
+    20.0,
+    19.0,
+    18.0,
+    16.8,
+    18.24,
+    20.3,
+    20.2,
+    20.1,
+    18.8,
+    14.4,
+    15.74,
+    11.04,
+    20.2,
+    21.1,
+    20.0,
+    16.7,
+    17.58,
+    21.4,
+    16.7,
+    21.0,
+    17.0,
+    18.8,
+    18.0,
+    20.3,
+    18.3,
+    17.8,
+    16.76,
+    16.96,
+    16.9,
+    19.3,
+    19.8,
+    20.0,
+    21.3,
+    18.14,
+    18.0,
+    20.0,
+    15.64,
+    17.84,
+    17.7,
+    20.0,
+    14.04,
+    20.0,
+    20.28,
+    20.3,
+    20.1,
+    21.6,
+    20.26,
+    18.5,
+    15.0,
+    21.3,
+    17.0,
+    10.7,
+    21.14,
+    17.94,
+    20.0,
+    20.3,
+    16.5,
+    21.3,
+    20.0,
+    17.16,
+    18.8,
+    20.0,
+    21.0,
+    18.4,
+    19.9,
+    17.1,
+    19.58,
+    16.96,
+    19.6,
+    18.3,
+    20.0,
+    20.8,
+    21.3,
+    19.0,
+    19.04,
+    20.0,
+    14.84,
+    5.1,
+    21.0,
+    16.1,
+    20.0,
+    20.34,
+    17.0,
+    17.56,
+    20.0,
+    20.0,
+    20.0
+  ],
+  "trust_trajectory": [
+    1.0,
+    1.0,
+    0.95,
+    1.0,
+    1.0,
+    0.9,
+    0.96,
+    1.0,
+    0.93,
+    0.92,
+    1.0,
+    0.98,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.82,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.6,
+    0.92,
+    0.92,
+    0.95,
+    1.0,
+    1.0,
+    1.0,
+    0.69,
+    0.95,
+    0.95,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.78,
+    0.98,
+    0.95,
+    0.95,
+    1.0,
+    1.0,
+    1.0,
+    0.92,
+    0.95,
+    1.0,
+    0.62,
+    0.92,
+    0.95,
+    1.0,
+    0.87,
+    1.0,
+    0.99,
+    1.0,
+    1.0,
+    1.0,
+    0.98,
+    1.0,
+    1.0,
+    1.0,
+    0.95,
+    1.0,
+    0.92,
+    0.92,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.93,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.99,
+    0.98,
+    1.0,
+    0.95,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.87,
+    1.0,
+    0.92,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.97,
+    1.0,
+    0.98,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "outcomes": [
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "VULNERABLE",
+    "AT_RISK",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "AT_RISK",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "SAFE",
+    "VULNERABLE",
+    "SAFE",
+    "SAFE",
+    "SAFE"
+  ],
+  "rubric_history": [
+    {
+      "intervention_timing": 0.0661,
+      "guardian_trust": 0.001,
+      "silence_intelligence": 0.1867
+    },
+    {
+      "intervention_timing": 0.0562,
+      "guardian_trust": 0.013,
+      "silence_intelligence": 0.152
+    },
+    {
+      "intervention_timing": 0.062,
+      "guardian_trust": 0.0055,
+      "silence_intelligence": 0.1693
+    },
+    {
+      "intervention_timing": 0.0594,
+      "guardian_trust": 0.0165,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0322,
+      "guardian_trust": 0.007,
+      "silence_intelligence": 0.1547
+    },
+    {
+      "intervention_timing": 0.0483,
+      "guardian_trust": -0.0045,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.0558,
+      "guardian_trust": 0.0025,
+      "silence_intelligence": 0.164
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0428,
+      "guardian_trust": 0.004,
+      "silence_intelligence": 0.1387
+    },
+    {
+      "intervention_timing": 0.0286,
+      "guardian_trust": -0.0185,
+      "silence_intelligence": 0.1187
+    },
+    {
+      "intervention_timing": 0.0608,
+      "guardian_trust": 0.0195,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0652,
+      "guardian_trust": 0.0265,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0638,
+      "guardian_trust": 0.014,
+      "silence_intelligence": 0.1813
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0608,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0474,
+      "guardian_trust": -0.0035,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.049,
+      "guardian_trust": 0.0225,
+      "silence_intelligence": 0.116
+    },
+    {
+      "intervention_timing": 0.0643,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.188
+    },
+    {
+      "intervention_timing": 0.0598,
+      "guardian_trust": -0.001,
+      "silence_intelligence": 0.1627
+    },
+    {
+      "intervention_timing": 0.066,
+      "guardian_trust": 0.0285,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0433,
+      "guardian_trust": -0.003,
+      "silence_intelligence": 0.1187
+    },
+    {
+      "intervention_timing": 0.0411,
+      "guardian_trust": -0.005,
+      "silence_intelligence": 0.128
+    },
+    {
+      "intervention_timing": 0.0487,
+      "guardian_trust": 0.0275,
+      "silence_intelligence": 0.156
+    },
+    {
+      "intervention_timing": 0.0322,
+      "guardian_trust": -0.0225,
+      "silence_intelligence": 0.1533
+    },
+    {
+      "intervention_timing": 0.0665,
+      "guardian_trust": 0.0195,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.066,
+      "guardian_trust": 0.0055,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0397,
+      "guardian_trust": -0.0065,
+      "silence_intelligence": 0.1373
+    },
+    {
+      "intervention_timing": 0.0339,
+      "guardian_trust": -0.0345,
+      "silence_intelligence": 0.0787
+    },
+    {
+      "intervention_timing": 0.062,
+      "guardian_trust": 0.007,
+      "silence_intelligence": 0.144
+    },
+    {
+      "intervention_timing": 0.0581,
+      "guardian_trust": 0.014,
+      "silence_intelligence": 0.1813
+    },
+    {
+      "intervention_timing": 0.0648,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0452,
+      "guardian_trust": 0.0065,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0514,
+      "guardian_trust": 0.0065,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.0447,
+      "guardian_trust": 0.013,
+      "silence_intelligence": 0.1627
+    },
+    {
+      "intervention_timing": 0.0665,
+      "guardian_trust": 0.0065,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0536,
+      "guardian_trust": 0.0005,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0496,
+      "guardian_trust": -0.007,
+      "silence_intelligence": 0.168
+    },
+    {
+      "intervention_timing": 0.0503,
+      "guardian_trust": -0.0015,
+      "silence_intelligence": 0.108
+    },
+    {
+      "intervention_timing": 0.0483,
+      "guardian_trust": -0.0075,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.0483,
+      "guardian_trust": 0.0055,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.0531,
+      "guardian_trust": 0.022,
+      "silence_intelligence": 0.1547
+    },
+    {
+      "intervention_timing": 0.0643,
+      "guardian_trust": 0.0195,
+      "silence_intelligence": 0.188
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0687,
+      "guardian_trust": 0.024,
+      "silence_intelligence": 0.1867
+    },
+    {
+      "intervention_timing": 0.0643,
+      "guardian_trust": 0.0065,
+      "silence_intelligence": 0.188
+    },
+    {
+      "intervention_timing": 0.0616,
+      "guardian_trust": 0.014,
+      "silence_intelligence": 0.176
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0267,
+      "guardian_trust": -0.0105,
+      "silence_intelligence": 0.0387
+    },
+    {
+      "intervention_timing": 0.0411,
+      "guardian_trust": -0.008,
+      "silence_intelligence": 0.144
+    },
+    {
+      "intervention_timing": 0.0406,
+      "guardian_trust": 0.021,
+      "silence_intelligence": 0.1253
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0571,
+      "guardian_trust": -0.003,
+      "silence_intelligence": 0.1627
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0634,
+      "guardian_trust": 0.0045,
+      "silence_intelligence": 0.188
+    },
+    {
+      "intervention_timing": 0.062,
+      "guardian_trust": 0.0085,
+      "silence_intelligence": 0.1693
+    },
+    {
+      "intervention_timing": 0.0638,
+      "guardian_trust": 0.011,
+      "silence_intelligence": 0.1813
+    },
+    {
+      "intervention_timing": 0.0659,
+      "guardian_trust": 0.029,
+      "silence_intelligence": 0.1387
+    },
+    {
+      "intervention_timing": 0.0665,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0567,
+      "guardian_trust": 0.013,
+      "silence_intelligence": 0.148
+    },
+    {
+      "intervention_timing": 0.0349,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1667
+    },
+    {
+      "intervention_timing": 0.062,
+      "guardian_trust": 0.0075,
+      "silence_intelligence": 0.156
+    },
+    {
+      "intervention_timing": 0.0491,
+      "guardian_trust": 0.0275,
+      "silence_intelligence": 0.1507
+    },
+    {
+      "intervention_timing": 0.0317,
+      "guardian_trust": 0.004,
+      "silence_intelligence": 0.0987
+    },
+    {
+      "intervention_timing": 0.0687,
+      "guardian_trust": 0.024,
+      "silence_intelligence": 0.1867
+    },
+    {
+      "intervention_timing": 0.0549,
+      "guardian_trust": -0.0015,
+      "silence_intelligence": 0.1587
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0643,
+      "guardian_trust": 0.014,
+      "silence_intelligence": 0.176
+    },
+    {
+      "intervention_timing": 0.0576,
+      "guardian_trust": 0.0175,
+      "silence_intelligence": 0.188
+    },
+    {
+      "intervention_timing": 0.0621,
+      "guardian_trust": 0.004,
+      "silence_intelligence": 0.1813
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0383,
+      "guardian_trust": -0.008,
+      "silence_intelligence": 0.076
+    },
+    {
+      "intervention_timing": 0.0558,
+      "guardian_trust": 0.0055,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0648,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0469,
+      "guardian_trust": 0.0045,
+      "silence_intelligence": 0.1453
+    },
+    {
+      "intervention_timing": 0.0571,
+      "guardian_trust": 0.0375,
+      "silence_intelligence": 0.156
+    },
+    {
+      "intervention_timing": 0.0486,
+      "guardian_trust": -0.0025,
+      "silence_intelligence": 0.1107
+    },
+    {
+      "intervention_timing": 0.0508,
+      "guardian_trust": 0.009,
+      "silence_intelligence": 0.1287
+    },
+    {
+      "intervention_timing": 0.0608,
+      "guardian_trust": 0.0095,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0616,
+      "guardian_trust": 0.004,
+      "silence_intelligence": 0.176
+    },
+    {
+      "intervention_timing": 0.0379,
+      "guardian_trust": 0.006,
+      "silence_intelligence": 0.1147
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0572,
+      "guardian_trust": -0.0075,
+      "silence_intelligence": 0.1747
+    },
+    {
+      "intervention_timing": 0.0687,
+      "guardian_trust": 0.024,
+      "silence_intelligence": 0.1867
+    },
+    {
+      "intervention_timing": 0.0608,
+      "guardian_trust": 0.0195,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0485,
+      "guardian_trust": -0.0155,
+      "silence_intelligence": 0.1133
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0461,
+      "guardian_trust": 0.013,
+      "silence_intelligence": 0.1733
+    },
+    {
+      "intervention_timing": 0.002,
+      "guardian_trust": 0.009,
+      "silence_intelligence": 0.0973
+    },
+    {
+      "intervention_timing": 0.0692,
+      "guardian_trust": 0.0195,
+      "silence_intelligence": 0.1933
+    },
+    {
+      "intervention_timing": 0.0482,
+      "guardian_trust": 0.007,
+      "silence_intelligence": 0.1387
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.0579,
+      "guardian_trust": 0.001,
+      "silence_intelligence": 0.128
+    },
+    {
+      "intervention_timing": 0.0483,
+      "guardian_trust": 0.0055,
+      "silence_intelligence": 0.18
+    },
+    {
+      "intervention_timing": 0.0616,
+      "guardian_trust": 0.0085,
+      "silence_intelligence": 0.164
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    },
+    {
+      "intervention_timing": 0.067,
+      "guardian_trust": 0.015,
+      "silence_intelligence": 0.2
+    }
+  ]
+}
