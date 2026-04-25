@@ -11,11 +11,13 @@ env/
 # Checkpoints
 checkpoints/
 grpo_checkpoints/
+training/checkpoints/
 *.safetensors
 *.bin
 *.pt
 
+# Model weights
+trained_model/
+
 # System
 .DS_Store
-venv/
-training/checkpoints/

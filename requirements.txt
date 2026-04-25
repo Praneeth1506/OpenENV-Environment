@@ -5,9 +5,9 @@ datasets
 peft
 accelerate
 bitsandbytes
+huggingface_hub
 gradio
 plotly
 pandas
-numpy
 numpy
 wandb
