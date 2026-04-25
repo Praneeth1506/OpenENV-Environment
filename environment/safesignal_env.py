@@ -1,5 +1,14 @@
 # safesignal_env.py
 import random
+import sys
+import os
+
+try:
+    import openenv
+    BASE_CLASS = openenv.env.Env
+except ImportError:
+    BASE_CLASS = object
+
 from simulated_child import SimulatedChild
 from reward import compute_immediate_reward, compute_episode_reward
 from constants import EPISODE_LENGTH
@@ -11,10 +20,12 @@ ACTIONS = [
     "URGENT_SUPPORT"
 ]
 
-class SafeSignalEnv:
+class SafeSignalEnv(BASE_CLASS):
 
     def __init__(self, archetype=None):
-        self.archetype = archetype  # None = random each episode
+        if BASE_CLASS != object:
+            super().__init__()
+        self.archetype = archetype
         self.child = None
         self.day = 0
         self.episode_history = []
