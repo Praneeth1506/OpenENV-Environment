@@ -168,5 +168,5 @@ Parameters calibrated to published research:
 
 - **Live Demo:** [HuggingFace Space](https://huggingface.co/spaces/shakthiabi06/safesignal)
 - **Training Notebook:** *(Colab link — add when available)*
-- **Video Walkthrough:** *(YouTube link — add when available)*
+- **Blog Post:** [HuggingFace Model Card](https://huggingface.co/shakthiabi06/safesignal-blog)
 - **Team Repo:** [GitHub](https://github.com/Praneeth1506/OpenENV-Environment)
