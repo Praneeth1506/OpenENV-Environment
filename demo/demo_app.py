@@ -209,9 +209,11 @@ def run_comparison():
                 )
 
     fig.update_layout(
-        height=400, showlegend=False,
+        height=500, showlegend=False,
         title="Same scenario. Same child. Completely different outcomes.",
         plot_bgcolor="white", paper_bgcolor="white",
+        font=dict(size=11),
+        margin=dict(l=50, r=50, t=80, b=50),
     )
     for col in [1, 2]:
         fig.update_yaxes(range=[0, 1.1], title_text="Trust", row=1, col=col)
@@ -377,7 +379,7 @@ with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
             gr.Markdown("Same scenario. Same child. Trained vs untrained agent.")
             compare_btn = gr.Button("▶ Compare Agents", variant="primary")
             compare_summary = gr.Markdown()
-            compare_chart = gr.Plot()
+            compare_chart = gr.Plot(container=True)
             compare_btn.click(fn=run_comparison, outputs=[compare_chart, compare_summary])
 
         with gr.Tab("🎛️ Live Agent Reasoning"):
