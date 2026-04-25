@@ -209,7 +209,7 @@ trainer = GRPOTrainer(
     reward_funcs  = grpo_reward_fn,
     args          = grpo_config,
     train_dataset = dataset,
-    tokenizer     = tokenizer,
+    processing_class = tokenizer,
 )
 
 print(f"\nStarting GRPO training...")
