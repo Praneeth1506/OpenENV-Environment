@@ -17,7 +17,7 @@ training_exit_code = None
 def run_training():
     global training_done, training_exit_code
     proc = subprocess.Popen(
-        [sys.executable, "training/train_grpo.py"],
+        [sys.executable, "training/train.py"],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
@@ -55,7 +55,7 @@ class LogHandler(BaseHTTPRequestHandler):
   </style>
 </head>
 <body>
-  <h2>SafeSignal GRPO Training</h2>
+  <h2>SafeSignal PPO Training</h2>
   <span class="badge">{'Done' if training_done else 'Training...'}</span>
   <p style="color:#aaa">Page auto-refreshes every 5 s &nbsp;|&nbsp; status: {status}</p>
   <pre>{body}</pre>
