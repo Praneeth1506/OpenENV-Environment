@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environments
+venv/
+env/
+.env
+
+# Checkpoints
+checkpoints/
+grpo_checkpoints/
+*.safetensors
+*.bin
+*.pt
+
+# System
+.DS_Store
