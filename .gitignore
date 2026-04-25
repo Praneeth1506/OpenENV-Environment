@@ -17,3 +17,5 @@ grpo_checkpoints/
 
 # System
 .DS_Store
+venv/
+training/checkpoints/
