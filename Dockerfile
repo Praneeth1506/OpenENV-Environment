@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 # Install Python packages
 RUN pip install --no-cache-dir \
     transformers \
-    "trl>=0.9.0" \
+    "trl>=0.12.0" \
     datasets \
     peft \
     accelerate \
