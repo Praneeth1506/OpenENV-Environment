@@ -1,8 +1,10 @@
-openenv
-transformers
-trl
-unsloth
 torch
+transformers
+trl>=0.9.0
+datasets
+peft
+accelerate
+bitsandbytes
 gradio
 plotly
 pandas
