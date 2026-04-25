@@ -3,9 +3,7 @@ title: SafeSignal
 emoji: 🚦
 colorFrom: indigo
 colorTo: blue
-sdk: python
-python_version: "3.11"
-app_file: space_entrypoint.py
+sdk: docker
 pinned: false
 ---
 
