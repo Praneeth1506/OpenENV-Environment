@@ -102,7 +102,7 @@ Five design decisions built into the architecture, not added afterward:
 2. **No data storage** — rolling window processing, signals discarded after use
 3. **Child is a participant** — must consent at setup, can deactivate anytime
 4. **Conversation prompt output only** — guardian receives a nudge, not a report
-5. **Calibrated to external threats only** — not useful for controlling parents
+5. **Calibrated to external threats only** — not useful for controlling parents to use against their children
 
 ---
 
