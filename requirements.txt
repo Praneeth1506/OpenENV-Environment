@@ -3,7 +3,7 @@ transformers
 trl
 unsloth
 torch
-gradio
+gradio == 4.44.0
 plotly
 pandas
 numpy
