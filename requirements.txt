@@ -1,3 +1,4 @@
+openenv
 torch
 transformers
 trl>=0.12.0
@@ -8,6 +9,7 @@ bitsandbytes
 huggingface_hub
 gradio
 plotly
+uvicorn
 pandas
 numpy
 wandb
