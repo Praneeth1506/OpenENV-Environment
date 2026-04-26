@@ -23,7 +23,11 @@ from demo_scenarios import (
     run_live_episode,
     rule_based_agent,
 )
-from environment.grader import grade_action
+try:
+    from environment.grader import grade_action
+except ImportError:
+    def grade_action(action, hidden_state, guardian_trust, days_since_last_alert, consecutive_ignored):
+        return 0.5
 
 
 # ── Color maps ────────────────────────────────────────────────────────────
