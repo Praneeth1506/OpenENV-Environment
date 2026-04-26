@@ -23,6 +23,8 @@ from demo_scenarios import (
     run_live_episode,
     rule_based_agent,
 )
+from prompt_builder import state_to_prompt, parse_action
+
 try:
     from environment.grader import grade_action
 except ImportError:
@@ -262,8 +264,8 @@ def run_live(
     }
 
     action = rule_based_agent(state)
+    prompt = state_to_prompt(state)
 
-    # Estimate hidden state from observable signals for grading
     risk = (
         min(int(unknown_contacts) / 5, 1.0) * 0.3 +
         min(int(message_volume) / 50, 1.0) * 0.3 +
