@@ -409,14 +409,13 @@ with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
         ✅ 84% of episodes end SAFE
         ✅ Guardian trust preserved at 0.97
         """)
-            GITHUB_RAW = "https://raw.githubusercontent.com/Praneeth1506/OpenENV-Environment/main/results/plots"
-            gr.Image(value=f"{GITHUB_RAW}/01_reward_curve.png",
+            gr.Image(value="results/plots/01_reward_curve.png",
                     label="Reward Curve — GRPO Trained vs Random Baseline")
-            gr.Image(value=f"{GITHUB_RAW}/02_trust_comparison.png",
+            gr.Image(value="results/plots/02_trust_comparison.png",
                     label="Guardian Trust Preservation")
-            gr.Image(value=f"{GITHUB_RAW}/03_safety_outcomes.png",
+            gr.Image(value="results/plots/03_safety_outcomes.png",
                     label="Child Safety Outcomes")
-            gr.Image(value=f"{GITHUB_RAW}/04_rubric_breakdown.png",
+            gr.Image(value="results/plots/04_rubric_breakdown.png",
                     label="Composable Rubric Scores")
 
     gr.Markdown("""
