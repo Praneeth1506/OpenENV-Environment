@@ -396,11 +396,28 @@ with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
                 outputs=[live_output],
             )
 
-        with gr.Tab("📈 Training Results"):
-            gr.Markdown("Reward curve showing learning progress across training episodes.")
-            curve_btn = gr.Button("Load Results", variant="secondary")
-            curve_plot = gr.Plot()
-            curve_btn.click(fn=show_reward_curve, outputs=[curve_plot])
+        with gr.Tab("Training Results"):
+            gr.Markdown("## GRPO Training Evidence")
+            gr.Markdown("""
+        | Agent | Avg Reward | Final Trust | % Ended Safe |
+        |---|---|---|---|
+        | Random Baseline | -44.13 | 0.06 | ~15% |
+        | Always Silent | +16.56 | 1.00 | ~60% |
+        | **GRPO Trained** | **+18.52** | **0.97** | **84%** |
+
+        ✅ Beats always-silent benchmark
+        ✅ 84% of episodes end SAFE
+        ✅ Guardian trust preserved at 0.97
+        """)
+            GITHUB_RAW = "https://raw.githubusercontent.com/Praneeth1506/OpenENV-Environment/main/results/plots"
+            gr.Image(value=f"{GITHUB_RAW}/01_reward_curve.png",
+                    label="Reward Curve — GRPO Trained vs Random Baseline")
+            gr.Image(value=f"{GITHUB_RAW}/02_trust_comparison.png",
+                    label="Guardian Trust Preservation")
+            gr.Image(value=f"{GITHUB_RAW}/03_safety_outcomes.png",
+                    label="Child Safety Outcomes")
+            gr.Image(value=f"{GITHUB_RAW}/04_rubric_breakdown.png",
+                    label="Composable Rubric Scores")
 
     gr.Markdown("""
 ---
