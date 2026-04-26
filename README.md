@@ -81,16 +81,23 @@ SafeSignal observes behavioral metadata only — never message content:
 
 ## Results
 
-| Agent | Total Reward | Final State | Final Trust |
+| Agent | Avg Reward | % Ended Safe | Avg Final Trust |
 |---|---|---|---|
-| Random (untrained) | -133 | AT_RISK | 0.00 |
-| Always silent | +11.0 | VULNERABLE | 1.00 |
-| Trained agent | +12.0+ | SAFE | 0.92+ |
+| Random (untrained) | -44.13 | ~15% | 0.00 |
+| Always Silent | +16.56 | ~60% | 1.00 |
+| GRPO Trained | +18.52 | 84% | 0.97 |
 
-The trained agent learns to:
-- Stay silent when the child is safe (preserving trust)
-- Intervene at the right moment with the right urgency
-- Avoid alert fatigue that destroys guardian responsiveness
+![Reward Curve](results/plots/01_reward_curve.png)
+*GRPO trained agent vs random baseline. Trained agent beats always-silent benchmark.*
+
+![Trust Comparison](results/plots/02_trust_comparison.png)
+*Guardian trust preservation. Random agent destroys trust. Trained agent maintains 0.97 average.*
+
+![Safety Outcomes](results/plots/03_safety_outcomes.png)
+*Final child risk state distribution. Trained agent produces 84% SAFE outcomes.*
+
+![Rubric Breakdown](results/plots/04_rubric_breakdown.png)
+*Individual composable rubric scores during training.*
 
 ---
 
