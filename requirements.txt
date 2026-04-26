@@ -13,3 +13,4 @@ numpy
 wandb
 Pillow
 requests
+matplotlib
