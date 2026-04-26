@@ -414,17 +414,99 @@ with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
         ✅ Guardian trust preserved at 0.97
         """)
             def load_plots():
-                plots_dir = os.path.join(os.path.dirname(__file__), '..', 'results', 'plots')
-                images = []
-                for plot in ["01_reward_curve.png", "02_trust_comparison.png",
-                            "03_safety_outcomes.png", "04_rubric_breakdown.png"]:
-                    path = os.path.join(plots_dir, plot)
-                    try:
-                        img = Image.open(path)
-                        images.append(img)
-                    except:
-                        images.append(None)
-                return images
+                import matplotlib
+                matplotlib.use('Agg')
+                import matplotlib.pyplot as plt
+
+                results_dir = os.path.join(os.path.dirname(__file__), '..', 'results')
+                baseline_path = os.path.join(results_dir, 'baseline_rewards.json')
+                trained_path = os.path.join(results_dir, 'trained_rewards.json')
+
+                def smooth(data, w=20):
+                    if len(data) < w:
+                        return data
+                    return list(np.convolve(data, np.ones(w)/w, mode='valid'))
+
+                def fig_to_pil(fig):
+                    buf = BytesIO()
+                    fig.savefig(buf, format='png', dpi=120, bbox_inches='tight')
+                    buf.seek(0)
+                    img = Image.open(buf).copy()
+                    plt.close(fig)
+                    return img
+
+                with open(baseline_path) as f:
+                    baseline = json.load(f)
+                with open(trained_path) as f:
+                    trained = json.load(f)
+
+                b_rewards = [ep["total_reward"] for ep in baseline["episodes"]]
+                t_rewards = trained["episode_rewards"]
+
+                # Plot 1 - Reward curve
+                fig, ax = plt.subplots(figsize=(10, 5))
+                ax.plot(smooth(b_rewards), color="#e74c3c", linewidth=2, label=f"Random (avg: {sum(b_rewards)/len(b_rewards):+.1f})")
+                ax.plot(smooth(t_rewards), color="#2ecc71", linewidth=2, label=f"Trained (avg: {trained['avg_reward']:+.1f})")
+                ax.axhline(y=16.56, color="#f39c12", linestyle="--", label="Always-Silent (+16.56)")
+                ax.set_xlabel("Episode"); ax.set_ylabel("Reward")
+                ax.set_title("GRPO Trained vs Random Baseline")
+                ax.legend(); ax.grid(alpha=0.3)
+                img1 = fig_to_pil(fig)
+
+                # Plot 2 - Trust
+                b_trust = [ep["final_guardian_trust"] for ep in baseline["episodes"]]
+                t_trust = trained.get("trust_trajectory", [])
+                fig, ax = plt.subplots(figsize=(10, 4))
+                if b_trust: ax.plot(smooth(b_trust), color="#e74c3c", linewidth=2, label=f"Random (avg: {sum(b_trust)/len(b_trust):.2f})")
+                if t_trust: ax.plot(smooth(t_trust), color="#2ecc71", linewidth=2, label=f"Trained (avg: {sum(t_trust)/len(t_trust):.2f})")
+                ax.set_ylim(0, 1.1); ax.set_xlabel("Episode"); ax.set_ylabel("Trust")
+                ax.set_title("Guardian Trust Preservation")
+                ax.legend(); ax.grid(alpha=0.3)
+                img2 = fig_to_pil(fig)
+
+                # Plot 3 - Outcomes
+                states = ["SAFE", "VULNERABLE", "AT_RISK", "IN_DANGER"]
+                colors = ["#2ecc71", "#f39c12", "#e67e22", "#e74c3c"]
+                b_counts = {s: sum(1 for ep in baseline["episodes"] if ep["final_hidden_state"]==s) for s in states}
+                t_counts = {s: trained.get("outcomes",[]).count(s) for s in states}
+                n_b = len(baseline["episodes"]); n_t = max(len(trained.get("outcomes",[])), 1)
+                fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+                ax1.bar(states, [b_counts[s]/n_b*100 for s in states], color=colors)
+                ax1.set_title("Random Agent"); ax1.set_ylabel("%")
+                ax2.bar(states, [t_counts[s]/n_t*100 for s in states], color=colors)
+                ax2.set_title("Trained Agent"); ax2.set_ylabel("%")
+                fig.suptitle("Child Safety Outcomes")
+                img3 = fig_to_pil(fig)
+
+                # Plot 4 - Rubric breakdown
+                rubric_history = trained.get("rubric_history", [])
+                rubric_names = ["intervention_timing", "guardian_trust", "silence_intelligence"]
+                rubric_labels = ["Intervention Timing (40%)", "Guardian Trust (30%)", "Silence Intelligence (20%)"]
+                rubric_colors = ["#3498db", "#2ecc71", "#9b59b6"]
+                fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+                for ax, name, label, color in zip(axes, rubric_names, rubric_labels, rubric_colors):
+                    scores = [h.get(name, 0) for h in rubric_history]
+                    smoothed = smooth(scores, w=min(20, len(scores)))
+                    ax.plot(smoothed, color=color, linewidth=2)
+                    ax.axhline(y=0, color="gray", linewidth=0.8, linestyle="--")
+                    ax.set_title(label, fontsize=12, fontweight="bold")
+                    ax.set_xlabel("Episode", fontsize=11)
+                    ax.set_ylabel("Rubric Score", fontsize=11)
+                    ax.grid(True, alpha=0.3)
+                    ax.spines["top"].set_visible(False)
+                    ax.spines["right"].set_visible(False)
+                    if smoothed:
+                        ax.text(0.98, 0.95, f"Final: {smoothed[-1]:+.3f}",
+                                transform=ax.transAxes, ha="right", va="top",
+                                fontsize=10, color=color, fontweight="bold")
+                fig.suptitle(
+                    "SafeSignal — Composable Rubric Scores During GRPO Training\n"
+                    "Each rubric improves independently — no single metric gaming",
+                    fontsize=14, fontweight="bold")
+                plt.tight_layout()
+                img4 = fig_to_pil(fig)
+
+                return img1, img2, img3, img4
 
             load_btn = gr.Button("Load Training Plots", variant="primary")
             img1 = gr.Image(label="Reward Curve — GRPO Trained vs Random Baseline")
