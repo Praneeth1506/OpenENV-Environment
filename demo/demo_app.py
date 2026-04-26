@@ -7,6 +7,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'environment'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'training'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, os.path.dirname(__file__))
 
 import gradio as gr
@@ -22,7 +23,7 @@ from demo_scenarios import (
     run_live_episode,
     rule_based_agent,
 )
-from training.prompt_builder import state_to_prompt, parse_action
+from environment.grader import grade_action
 
 
 # ── Color maps ────────────────────────────────────────────────────────────
@@ -257,7 +258,27 @@ def run_live(
     }
 
     action = rule_based_agent(state)
-    prompt = state_to_prompt(state)
+
+    # Estimate hidden state from observable signals for grading
+    risk = (
+        min(int(unknown_contacts) / 5, 1.0) * 0.3 +
+        min(int(message_volume) / 50, 1.0) * 0.3 +
+        max(0, -float(sentiment_trend) / 100) * 0.2 +
+        max(0, -float(friend_delta) / 100) * 0.2
+    )
+    estimated_hidden = (
+        "IN_DANGER" if risk > 0.7 else
+        "AT_RISK"   if risk > 0.4 else
+        "VULNERABLE" if risk > 0.2 else
+        "SAFE"
+    )
+    action_grade = grade_action(
+        action=action,
+        hidden_state=estimated_hidden,
+        guardian_trust=float(guardian_trust) / 100,
+        days_since_last_alert=int(days_since),
+        consecutive_ignored=int(consecutive_ignored),
+    )
 
     concern_notes = []
     if int(message_volume) > 40:
@@ -286,7 +307,8 @@ def run_live(
         f"## {action_emoji.get(action,'⚪')} Decision: {action.replace('_',' ')}\n\n"
         f"**Archetype:** {archetype}  \n"
         f"**Guardian trust:** {guardian_trust}%  \n"
-        f"**Days since last alert:** {days_since}\n\n"
+        f"**Days since last alert:** {days_since}  \n"
+        f"**Action grade:** {action_grade:.3f} / 1.000 (estimated risk: {estimated_hidden})\n\n"
     )
 
     if concern_notes:

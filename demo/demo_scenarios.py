@@ -3,8 +3,9 @@ import os
 import random
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'environment'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from environment.safesignal_env import SafeSignalEnv, ACTIONS
+from safesignal_env import SafeSignalEnv, ACTIONS
 import importlib.util
 _spec = importlib.util.spec_from_file_location(
     "env_demo_scenarios",
