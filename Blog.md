@@ -189,6 +189,8 @@ The live demo has four tabs:
 
 💻 **GitHub Repository:** [github.com/Praneeth1506/OpenENV-Environment](https://github.com/Praneeth1506/OpenENV-Environment)
 
+⚖️ **Model Weights:** [Trained Model](https://drive.google.com/file/d/1Rqfpit9_G2ZkPVF3kb9bo5v90ZBW72gs/view)
+
 ---
 
 ## Research Calibration
