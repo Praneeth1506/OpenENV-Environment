@@ -253,6 +253,6 @@ Parameters calibrated to published research:
 ## Links
 
 - **Live Demo:** [HuggingFace Space](https://huggingface.co/spaces/shakthiabi06/safesignal)
-- **Training Notebook:** *(Colab link — add when available)*
+- **Training Notebook:** [Colab Training Notebook](https://colab.research.google.com/github/Praneeth1506/OpenENV-Environment/blob/main/SafeSignal_GRPO_Training.ipynb)
 - **Blog Post:** [HuggingFace Model Card](https://huggingface.co/shakthiabi06/safesignal-blog)
 - **Team Repo:** [GitHub](https://github.com/Praneeth1506/OpenENV-Environment)
