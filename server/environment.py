@@ -1,13 +1,10 @@
 # server/environment.py
 # Object-based API wrapper around SafeSignalEnv.
 # Training scripts import SafeSignalEnvironment and ACTIONS from here.
-#
-# Adds environment/ to sys.path so the bare imports inside rubrics.py,
-# simulated_child.py, and reward.py resolve correctly — this is required
-# because those files use absolute imports (e.g. "from reward import ...").
 
 import sys
 import os
+from environment.grader import grade_episode
 
 _ENV_DIR = os.path.join(os.path.dirname(__file__), '..', 'environment')
 _ROOT_DIR = os.path.join(os.path.dirname(__file__), '..')
@@ -15,7 +12,7 @@ sys.path.insert(0, _ENV_DIR)
 sys.path.insert(0, _ROOT_DIR)
 
 from environment.safesignal_env import SafeSignalEnv, ACTIONS  # noqa: E402
-from rubrics import SafeSignalRubricSystem                      # noqa: E402
+from environment.rubrics import SafeSignalRubricSystem                      # noqa: E402
 
 _rubric_system = SafeSignalRubricSystem()
 
@@ -83,6 +80,26 @@ class SafeSignalEnvironment:
             info=info,
             rubric_scores=rubric_scores,
         )
+    
+    def state(self):
+        if self._env.child is None:
+            return None
+        return Observation(self._env.child.get_observable_state())
 
     def get_episode_summary(self):
         return self._env.get_episode_summary()
+
+
+    def grade(self, episode_history: list) -> float:
+        actions = [h["action"] for h in episode_history]
+        hidden_states = [h["hidden_state"] for h in episode_history]
+        rewards = [h["step_reward"] for h in episode_history]
+        final_trust = episode_history[-1]["guardian_trust"] if episode_history else 0.0
+
+        return grade_episode(
+            actions=actions,
+            hidden_states=hidden_states,
+            rewards=rewards,
+            final_guardian_trust=final_trust,
+            max_steps=30,
+        )

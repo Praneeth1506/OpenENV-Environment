@@ -22,7 +22,7 @@ from demo_scenarios import (
     run_live_episode,
     rule_based_agent,
 )
-from prompt_builder import state_to_prompt, parse_action
+from training.prompt_builder import state_to_prompt, parse_action
 
 
 # ── Color maps ────────────────────────────────────────────────────────────

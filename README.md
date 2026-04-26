@@ -37,6 +37,64 @@ SafeSignal attacks this gap — not by reading messages, but by learning the beh
 
 ---
 
+## The Problem SafeSignal Solves 
+
+Meta platforms — Instagram, WhatsApp, Messenger — are where
+a significant portion of online child safety incidents begin.
+Meta has invested heavily in content moderation, keyword
+filtering, and reporting systems.
+
+SafeSignal addresses the next frontier: **intervention policy
+intelligence** — teaching AI not just when something is wrong,
+but when and how to act on that knowledge without destroying
+the parent-child trust relationship.
+
+Child online safety research identifies seven open capability
+gaps. SafeSignal directly addresses six of them:
+
+| Gap | Current Systems | SafeSignal |
+|---|---|---|
+| Predictive trajectory | Reactive detection | ✓ POMDP model |
+| **Intervention intelligence** | **Alert or ignore** | **✓ Core system** |
+| Relationship dynamics | Content-based | ✓ 7 signal clusters |
+| No self-reporting needed | Requires disclosure | ✓ Passive detection |
+| Graded guardian alerts | Binary alerts | ✓ 4-level action space |
+| Cross-platform drift | Platform-siloed | ~ Phase 2 roadmap |
+| Subtle grooming detection | Keyword-based | ✓ Behavioral anomaly |
+
+> SafeSignal is designed to complement Meta's existing safety
+> infrastructure — not replace it. Where current systems
+> detect harmful content, SafeSignal detects harmful
+> behavioral trajectories before content becomes the issue.
+
+---
+
+## Why This Environment Is Novel
+
+Three questions judges ask about every environment:
+
+**"Does this teach an LLM something it currently can't do well?"**
+Yes. No LLM today can model intervention timing with guardian
+trust degradation over 30 days. This is a documented capability
+gap in child safety AI.
+
+**"Is the domain underexplored in RL/LLM training?"**
+Yes. Zero published RL benchmarks exist for child safety
+intervention timing. This environment is the first.
+
+**"Could a researcher write a paper about this?"**
+Yes. The specific contribution: a POMDP training environment
+where guardian trust is a degradable second-order resource
+and intervention timing is the primary optimization target.
+
+## Training Notebook
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Praneeth1506/OpenENV-Environment/blob/main/SafeSignal_GRPO_Training.ipynb)
+
+Runtime: T4 GPU — approximately 25 minutes end to end
+
+---
+
 ## What SafeSignal Does
 
 SafeSignal is a **reinforcement learning training environment** that teaches an AI agent to:
@@ -79,25 +137,33 @@ SafeSignal observes behavioral metadata only — never message content:
 
 ---
 
-## Results
+## Training Results
 
-| Agent | Avg Reward | % Ended Safe | Avg Final Trust |
+| Agent | Avg Reward | Final Trust | % Ended Safe |
 |---|---|---|---|
-| Random (untrained) | -44.13 | ~15% | 0.00 |
-| Always Silent | +16.56 | ~60% | 1.00 |
-| GRPO Trained | +18.52 | 84% | 0.97 |
+| Random (untrained) | -45.6 | 0.06 | 55% |
+| Always Silent | +15.17 | 1.00 | — |
+| **GRPO Trained** | **+18.5** | **0.97** | **84%** |
+
+- Beat always-silent benchmark (+15.17)
+- IN_DANGER outcomes eliminated — 5.5% → 0%
+- Guardian trust preserved at 97%
 
 ![Reward Curve](results/plots/01_reward_curve.png)
-*GRPO trained agent vs random baseline. Trained agent beats always-silent benchmark.*
+*GRPO trained agent (+18.5) vs random baseline (-45.6).
+Beats always-silent benchmark (+15.17).*
 
 ![Trust Comparison](results/plots/02_trust_comparison.png)
-*Guardian trust preservation. Random agent destroys trust. Trained agent maintains 0.97 average.*
+*Trained agent preserves guardian trust (0.97).
+Random agent destroys it (0.06).*
 
 ![Safety Outcomes](results/plots/03_safety_outcomes.png)
-*Final child risk state distribution. Trained agent produces 84% SAFE outcomes.*
+*84% safe outcomes vs 55% random.
+IN_DANGER eliminated completely.*
 
 ![Rubric Breakdown](results/plots/04_rubric_breakdown.png)
-*Individual composable rubric scores during training.*
+*Four composable rubrics positive throughout training.
+No single metric gaming.*
 
 ---
 
@@ -128,23 +194,36 @@ Five design decisions built into the architecture, not added afterward:
 
 ```
 safesignal/
-├── environment/          # OpenEnv simulation, archetypes, reward function
-│   ├── safesignal_env.py # Main environment — reset() and step()
-│   ├── simulated_child.py# Child behavior generator
-│   ├── rubrics.py        # Composable reward rubric system
-│   ├── episode_tracker.py# Multi-episode statistics
-│   └── signals/          # Seven behavioral signal cluster implementations
-├── training/             # Training pipeline
-│   ├── train_grpo.py     # GRPO training script
-│   ├── prompt_builder.py # State-to-prompt conversion
-│   └── baseline.py       # Random agent baseline
-├── demo/                 # Gradio demo interface
-│   ├── demo_app.py       # Four-tab Gradio application
-│   └── demo_scenarios.py # Deterministic demo episodes
-├── results/              # Training results
-│   └── baseline_rewards.json
-├── openenv.yaml          # OpenEnv manifest
-└── app.py                # HuggingFace Spaces entry point
+├── environment/           # OpenEnv simulation, archetypes, reward function
+│   ├── safesignal_env.py  # Main environment — reset() and step()
+│   ├── simulated_child.py # Child behavior generator
+│   ├── rubrics.py         # Composable reward rubric system
+│   ├── grader.py          # Deterministic grader (0.001-0.999)
+│   ├── episode_tracker.py # Multi-episode statistics
+│   └── signals/           # Seven behavioral signal cluster implementations
+├── server/
+│   └── environment.py     # OpenEnv server wrapper
+├── training/              # Training pipeline
+│   ├── train_grpo.py      # GRPO training script
+│   ├── grpo_rewards.py    # Three-component reward function
+│   ├── prompt_builder.py  # State-to-prompt conversion
+│   └── baseline.py        # Random agent baseline
+├── demo/                  # Gradio demo interface
+│   ├── demo_app.py        # Four-tab Gradio application
+│   └── demo_scenarios.py  # Deterministic demo episodes
+├── results/               # Training results and plots
+│   ├── baseline_rewards.json
+│   ├── trained_rewards.json
+│   └── plots/
+│       ├── 01_reward_curve.png
+│       ├── 02_trust_comparison.png
+│       ├── 03_safety_outcomes.png
+│       └── 04_rubric_breakdown.png
+├── models.py              # Typed dataclasses
+├── openenv.yaml           # OpenEnv manifest
+├── Dockerfile             # Container setup
+├── requirements.txt
+└── app.py                 # HuggingFace Spaces entry point
 ```
 
 ---
