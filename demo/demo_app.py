@@ -1,3 +1,7 @@
+import requests
+from PIL import Image
+from io import BytesIO
+
 import sys
 import os
 
@@ -409,14 +413,25 @@ with gr.Blocks(title="SafeSignal", theme=gr.themes.Soft()) as app:
         ✅ 84% of episodes end SAFE
         ✅ Guardian trust preserved at 0.97
         """)
-            gr.Image(value="results/plots/01_reward_curve.png",
-                    label="Reward Curve — GRPO Trained vs Random Baseline")
-            gr.Image(value="results/plots/02_trust_comparison.png",
-                    label="Guardian Trust Preservation")
-            gr.Image(value="results/plots/03_safety_outcomes.png",
-                    label="Child Safety Outcomes")
-            gr.Image(value="results/plots/04_rubric_breakdown.png",
-                    label="Composable Rubric Scores")
+            def load_plots():
+                plots_dir = os.path.join(os.path.dirname(__file__), '..', 'results', 'plots')
+                images = []
+                for plot in ["01_reward_curve.png", "02_trust_comparison.png",
+                            "03_safety_outcomes.png", "04_rubric_breakdown.png"]:
+                    path = os.path.join(plots_dir, plot)
+                    try:
+                        img = Image.open(path)
+                        images.append(img)
+                    except:
+                        images.append(None)
+                return images
+
+            load_btn = gr.Button("Load Training Plots", variant="primary")
+            img1 = gr.Image(label="Reward Curve — GRPO Trained vs Random Baseline")
+            img2 = gr.Image(label="Guardian Trust Preservation")
+            img3 = gr.Image(label="Child Safety Outcomes")
+            img4 = gr.Image(label="Composable Rubric Scores")
+            load_btn.click(fn=load_plots, outputs=[img1, img2, img3, img4])
 
     gr.Markdown("""
 ---

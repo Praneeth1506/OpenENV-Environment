@@ -11,3 +11,5 @@ plotly
 pandas
 numpy
 wandb
+Pillow
+requests
