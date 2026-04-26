@@ -127,13 +127,17 @@ That reasoning chain — knowing when to wait — is what we trained.
 
 ## Results
 
-| Agent | Avg Reward | Final State |
-|---|---|---|
-| Random Agent | -133 | AT_RISK |
-| Always Silent | +11.0 | VULNERABLE |
-| GRPO Trained | +12.0+ | SAFE |
+| Agent | Avg Reward | Final Trust | % Ended Safe |
+|---|---|---|---|
+| Random Agent | -45.6 | 0.06 | 55% |
+| Always Silent | +15.17 | 1.00 | — |
+| **GRPO Trained** | **+18.5** | **0.97** | **84%** |
 
-The always-silent agent scores +11.0 but leaves the child VULNERABLE. Our trained agent beats this by learning precisely when silence is wrong — intervening at the right moment with the right urgency, then going silent again as the child recovers.
+✅ Beat always-silent benchmark (+15.17)
+✅ IN_DANGER outcomes eliminated — 5.5% → 0%
+✅ Guardian trust preserved at 97%
+
+The always-silent agent scores +15.17 but never intervenes. Our trained agent beats this by learning precisely when silence is wrong — intervening at the right moment with the right urgency, then going silent again as the child recovers.
 
 ---
 
@@ -181,7 +185,7 @@ The live demo has four tabs:
 - **Live Agent Reasoning** — adjust behavioral signals with sliders and see the agent reason in real time
 - **Training Results** — reward curve showing learning progress
 
-📓 **Training Notebook:** *(Colab link — coming soon)*
+📓 **Training Notebook:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Praneeth1506/OpenENV-Environment/blob/main/SafeSignal_GRPO_Training.ipynb)
 
 💻 **GitHub Repository:** [github.com/Praneeth1506/OpenENV-Environment](https://github.com/Praneeth1506/OpenENV-Environment)
 
