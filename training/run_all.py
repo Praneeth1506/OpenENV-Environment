@@ -388,10 +388,10 @@ if rubric_history:
         ax.spines["right"].set_visible(False)
         if smoothed:
             final_val = smoothed[-1]
-            ax.annotate(f"Final: {final_val:+.3f}",
-                        xy=(len(smoothed) - 1, final_val),
-                        xytext=(len(smoothed) * 0.7, final_val + 0.05),
-                        fontsize=10, color=color, fontweight="bold")
+            ax.text(
+                0.98, 0.95, f"Final: {final_val:+.3f}",
+                transform=ax.transAxes, ha="right", va="top",
+                fontsize=10, color=color, fontweight="bold")
     fig.suptitle(
         "SafeSignal — Composable Rubric Scores During GRPO Training\n"
         "Each rubric improves independently — no single metric gaming",
